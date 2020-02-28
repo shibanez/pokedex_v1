@@ -20,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.example.pokedexv1.PokemonAPI.PokemonAPI;
+import com.example.pokedexv1.PokemonAPI.PokemonSingleton;
 import com.example.pokedexv1.model.Pokemon;
 
 import java.util.List;
@@ -43,10 +44,10 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
         }
     }
 
-    public PokemonAdapter(Context context, List<Pokemon> pokemonList, RequestQueue requestQueue) {
+    public PokemonAdapter(Context context, List<Pokemon> pokemonList) {
         this.pokemonList = pokemonList;
         this.context = context;
-        this.requestQueue = requestQueue;
+        this.requestQueue = PokemonSingleton.getInstance(context).getRequestQueue();
     }
 
     @Override

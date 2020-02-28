@@ -17,6 +17,7 @@ import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.StringRequest;
+import com.example.pokedexv1.PokemonAPI.PokemonSingleton;
 import com.example.pokedexv1.model.Pokemon;
 
 import org.json.JSONArray;
@@ -47,7 +48,7 @@ public class PokemonListActivity extends AppCompatActivity {
         Network network = new BasicNetwork(new HurlStack());
         requestQueue = new RequestQueue(cache, network);
 
-        requestQueue.start();
+        requestQueue = PokemonSingleton.getInstance(this).getRequestQueue();
         getPokemonList();
 
     }
@@ -72,7 +73,7 @@ public class PokemonListActivity extends AppCompatActivity {
                                 pokemonList.add(pokemon);
                             }
 
-                            pokemonAdapter = new PokemonAdapter(PokemonListActivity.this, pokemonList, requestQueue);
+                            pokemonAdapter = new PokemonAdapter(PokemonListActivity.this, pokemonList);
                             pokemonGridRecyclerView.setAdapter(pokemonAdapter);
                         } catch (JSONException e) {
                             e.printStackTrace();
