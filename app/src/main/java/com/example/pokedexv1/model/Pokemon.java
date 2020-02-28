@@ -1,6 +1,8 @@
 package com.example.pokedexv1.model;
 
-public class Pokemon {
+import java.io.Serializable;
+
+public class Pokemon implements Serializable {
     private String name, infoUrl, spriteUrl, imageUrl;
 
     public Pokemon (String name, String infoUrl, String spriteUrl, String imageUrl) {

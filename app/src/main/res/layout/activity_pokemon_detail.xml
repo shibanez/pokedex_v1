@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="1000dp"
+        android:background="@color/colorAccent">
+        <ImageView
+            android:id="@+id/image_pokemon_detail_image"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="75dp"
+            android:elevation="10dp"
+            android:layout_centerHorizontal="true"/>
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="1000dp"
+            android:layout_marginTop="150dp"
+            android:elevation="10dp"
+            app:cardCornerRadius="25dp">
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+</LinearLayout>

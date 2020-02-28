@@ -38,7 +38,7 @@ public class PokemonListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_pokemon_list);
 
         pokemonGridRecyclerView = (RecyclerView) findViewById(R.id.recycle_view_pokemon_grid);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
@@ -68,7 +68,7 @@ public class PokemonListActivity extends AppCompatActivity {
                                 String pokemonName = pokemonArray.getJSONObject(i).getString("name");
                                 String pokemonUrl = pokemonArray.getJSONObject(i).getString("url");
                                 String pokemonSpriteUrl = getResources().getString(R.string.sprite_link) + (i + 1) + ".png";
-                                String pokemonImageUrl = getResources().getString(R.string.image_link) + pokemonName + ".jpg";
+                                String pokemonImageUrl = getResources().getString(R.string.image_link) + pokemonName + ".png";
                                 Pokemon pokemon = new Pokemon(pokemonName, pokemonUrl, pokemonSpriteUrl, pokemonImageUrl);
                                 pokemonList.add(pokemon);
                             }

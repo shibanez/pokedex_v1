@@ -80,6 +80,9 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
         holder.pokemonCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(context, PokemonDetailActivity.class);
+                intent.putExtra("POKEMON", pokemon);
+                context.startActivity(intent);
             }
         });
     }
