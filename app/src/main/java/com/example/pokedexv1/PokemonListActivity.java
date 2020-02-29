@@ -1,5 +1,6 @@
 package com.example.pokedexv1;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,6 +35,9 @@ public class PokemonListActivity extends AppCompatActivity {
     private RecyclerView pokemonGridRecyclerView;
     private PokemonAdapter pokemonAdapter;
     private RequestQueue requestQueue;
+    private EndlessRecyclerViewScrollListener scrollListener;
+    GridLayoutManager mLayoutManager;
+    private String nextPokemonSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,20 +45,27 @@ public class PokemonListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pokemon_list);
 
         pokemonGridRecyclerView = (RecyclerView) findViewById(R.id.recycle_view_pokemon_grid);
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
+        mLayoutManager = new GridLayoutManager(this, 2);
         pokemonGridRecyclerView.setLayoutManager(mLayoutManager);
 
-        Cache cache = new DiskBasedCache(getCacheDir()); // 1MB cap
-        Network network = new BasicNetwork(new HurlStack());
-        requestQueue = new RequestQueue(cache, network);
+        scrollListener = new EndlessRecyclerViewScrollListener(mLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                getPokemonList(nextPokemonSet);
+            }
+        };
+        pokemonAdapter = new PokemonAdapter(PokemonListActivity.this, pokemonList);
+        pokemonGridRecyclerView.setAdapter(pokemonAdapter);
 
+        pokemonGridRecyclerView.addOnScrollListener(scrollListener);
         requestQueue = PokemonSingleton.getInstance(this).getRequestQueue();
-        getPokemonList();
 
+        String url = getResources().getString(R.string.pokemon_api_base_url) + "pokemon";
+        getPokemonList(url);
     }
 
-    private void getPokemonList() {
-        String url = getResources().getString(R.string.pokemon_api_base_url) + "pokemon" + "?offset=0&limit=50";
+
+    private void getPokemonList(String url) {
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -62,23 +73,23 @@ public class PokemonListActivity extends AppCompatActivity {
                         try {
                             JSONObject pokemonsJson = new JSONObject(response);
                             JSONArray pokemonArray = pokemonsJson.getJSONArray("results");
+                            nextPokemonSet = pokemonsJson.getString("next");
 
                             int len = pokemonArray.length();
                             for (int i = 0; i < len; i++) {
                                 String pokemonName = pokemonArray.getJSONObject(i).getString("name");
                                 String pokemonUrl = pokemonArray.getJSONObject(i).getString("url");
                                 String pokemonSpriteUrl = getResources().getString(R.string.sprite_link) +
-                                        ( i + 1 ) + ".png";
+                                        (pokemonList.size() + 1) + ".png";
                                 String pokemonGifUrl = getResources().getString(R.string.gif_link) +
                                         pokemonName + ".gif";
                                 Pokemon pokemon = new Pokemon(pokemonName, pokemonUrl, pokemonSpriteUrl, pokemonGifUrl);
                                 pokemonList.add(pokemon);
                             }
-                            pokemonAdapter = new PokemonAdapter(PokemonListActivity.this, pokemonList);
-                            pokemonGridRecyclerView.setAdapter(pokemonAdapter);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        pokemonAdapter.notifyDataSetChanged();
                     }
                 },
                 new Response.ErrorListener() {
@@ -89,5 +100,4 @@ public class PokemonListActivity extends AppCompatActivity {
                 });
         requestQueue.add(stringRequest);
     }
-
 }
