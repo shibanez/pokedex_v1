@@ -19,9 +19,9 @@
             android:elevation="1dp"/>
         <ImageView
             android:id="@+id/image_pokemon_detail_image"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="85dp"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_marginTop="75dp"
             android:elevation="10dp"
             android:layout_centerHorizontal="true"/>
         <androidx.cardview.widget.CardView
@@ -35,8 +35,53 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
-                android:gravity="center">
+                android:layout_marginTop="85dp"
+                android:gravity="center"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/text_pokemon_detail_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/open_sans"
+                    android:textSize="30dp"
+                    android:textStyle="bold" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_pokemon_type1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="5dp">
+                    <TextView
+                        android:id="@+id/text_pokemon_type1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:textColor="#FFFFFF"/>
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_pokemon_type2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:cardCornerRadius="15dp"
+                    app:cardElevation="5dp">
+                    <TextView
+                        android:id="@+id/text_pokemon_type2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:textColor="#FFFFFF"/>
+                </androidx.cardview.widget.CardView>
+                </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </RelativeLayout>
