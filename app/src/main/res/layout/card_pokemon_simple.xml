@@ -16,8 +16,8 @@
         android:orientation="vertical">
         <ImageView
             android:id="@+id/image_pokemon_sprite"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="wrap_content"
+            android:layout_height="75dp"
             android:layout_gravity="center"
             android:src="@drawable/ditto"/>
         <TextView

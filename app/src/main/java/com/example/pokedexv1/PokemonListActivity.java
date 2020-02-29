@@ -67,12 +67,13 @@ public class PokemonListActivity extends AppCompatActivity {
                             for (int i = 0; i < len; i++) {
                                 String pokemonName = pokemonArray.getJSONObject(i).getString("name");
                                 String pokemonUrl = pokemonArray.getJSONObject(i).getString("url");
-                                String pokemonSpriteUrl = getResources().getString(R.string.sprite_link) + (i + 1) + ".png";
-                                String pokemonImageUrl = getResources().getString(R.string.image_link) + pokemonName + ".png";
-                                Pokemon pokemon = new Pokemon(pokemonName, pokemonUrl, pokemonSpriteUrl, pokemonImageUrl);
+                                String pokemonSpriteUrl = getResources().getString(R.string.sprite_link) +
+                                        ( i + 1 ) + ".png";
+                                String pokemonGifUrl = getResources().getString(R.string.gif_link) +
+                                        pokemonName + ".gif";
+                                Pokemon pokemon = new Pokemon(pokemonName, pokemonUrl, pokemonSpriteUrl, pokemonGifUrl);
                                 pokemonList.add(pokemon);
                             }
-
                             pokemonAdapter = new PokemonAdapter(PokemonListActivity.this, pokemonList);
                             pokemonGridRecyclerView.setAdapter(pokemonAdapter);
                         } catch (JSONException e) {

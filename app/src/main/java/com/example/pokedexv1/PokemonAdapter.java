@@ -1,26 +1,17 @@
 package com.example.pokedexv1;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.ImageRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.example.pokedexv1.PokemonAPI.PokemonAPI;
+import com.bumptech.glide.Glide;
 import com.example.pokedexv1.PokemonAPI.PokemonSingleton;
 import com.example.pokedexv1.model.Pokemon;
 
@@ -29,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+
 
 public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHolder> {
 
@@ -68,21 +60,10 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
         final Pokemon pokemon = pokemonList.get(position);
         holder.pokemonNameTextView.setText(pokemon.getName());
 
-
-
-        ImageRequest imageRequest = new ImageRequest(pokemon.getSpriteUrl(),
-                new Response.Listener<Bitmap>() {
-                    @Override
-                    public void onResponse(Bitmap bitmap) {
-                        holder.pokemonSpriteImageView.setImageBitmap(bitmap);
-                    }
-                }, 0, 0, null,
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-        requestQueue.add(imageRequest);
+        Glide.with(context)
+                .load(pokemon.getSpriteUrl())
+                .placeholder(R.drawable.ditto)
+                .into(holder.pokemonSpriteImageView);
 
         holder.pokemonCardView.setOnClickListener(new View.OnClickListener() {
             @Override
