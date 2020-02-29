@@ -63,7 +63,12 @@ public class PokemonDetailActivity extends AppCompatActivity {
                                 }
                             }
                             int bgResourceID = getResources().getIdentifier("bg_" + pokemon.getType1(), "drawable", getPackageName());
-                            pokemonBGImageView.setImageDrawable(getDrawable(bgResourceID));
+                            if (bgResourceID != 0) {
+                                pokemonBGImageView.setImageDrawable(getDrawable(bgResourceID));
+                            } else {
+                                Toast.makeText(PokemonDetailActivity.this, pokemon.getType1(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(PokemonDetailActivity.this, "No backgroudn resource", Toast.LENGTH_SHORT).show();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

@@ -44,9 +44,19 @@ public class PokemonListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pokemon_list);
 
+        requestQueue = PokemonSingleton.getInstance(this).getRequestQueue();
+        setUpPokemonGridRecyclerView();
+
+        String initialPokemonSetUrl = getResources().getString(R.string.pokemon_api_base_url) + "pokemon";
+        getPokemonList(initialPokemonSetUrl);
+    }
+
+    private void setUpPokemonGridRecyclerView() {
         pokemonGridRecyclerView = (RecyclerView) findViewById(R.id.recycle_view_pokemon_grid);
         mLayoutManager = new GridLayoutManager(this, 2);
         pokemonGridRecyclerView.setLayoutManager(mLayoutManager);
+        pokemonAdapter = new PokemonAdapter(PokemonListActivity.this, pokemonList);
+        pokemonGridRecyclerView.setAdapter(pokemonAdapter);
 
         scrollListener = new EndlessRecyclerViewScrollListener(mLayoutManager) {
             @Override
@@ -54,19 +64,12 @@ public class PokemonListActivity extends AppCompatActivity {
                 getPokemonList(nextPokemonSet);
             }
         };
-        pokemonAdapter = new PokemonAdapter(PokemonListActivity.this, pokemonList);
-        pokemonGridRecyclerView.setAdapter(pokemonAdapter);
 
         pokemonGridRecyclerView.addOnScrollListener(scrollListener);
-        requestQueue = PokemonSingleton.getInstance(this).getRequestQueue();
-
-        String url = getResources().getString(R.string.pokemon_api_base_url) + "pokemon";
-        getPokemonList(url);
     }
 
-
     private void getPokemonList(String url) {
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+        StringRequest pokemonSetRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -98,6 +101,6 @@ public class PokemonListActivity extends AppCompatActivity {
                         Toast.makeText(PokemonListActivity.this, "Error fetching from Pokemon API", Toast.LENGTH_SHORT).show();
                     }
                 });
-        requestQueue.add(stringRequest);
+        requestQueue.add(pokemonSetRequest);
     }
 }
