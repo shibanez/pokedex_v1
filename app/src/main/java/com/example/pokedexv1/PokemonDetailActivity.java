@@ -26,6 +26,9 @@ import org.json.JSONObject;
 
 public class PokemonDetailActivity extends AppCompatActivity {
 
+    private ImageView pokemonImageView;
+    private ImageView pokemonTypeBGImageView;
+
     private RequestQueue requestQueue = PokemonSingleton.getInstance(this).getRequestQueue();
     private Pokemon pokemon;
 
@@ -34,53 +37,73 @@ public class PokemonDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pokemon_detail);
 
-        pokemon = (Pokemon) getIntent().getSerializableExtra("POKEMON");
+        pokemon = new Pokemon(getIntent().getStringExtra("POKEMON_NAME"));
 
-        ImageView pokemonImageView = findViewById(R.id.image_pokemon_detail_image);
-        final ImageView pokemonBGImageView = findViewById(R.id.image_pokemon_detail_bg);
-        //TextView pokemonNameTextView = findViewById(R.id.text_pokemon_detail_name);
+        getPokemonDetails(pokemon.getName());
 
         //pokemonNameTextView.setText(pokemon.getName());
 
-        Glide.with(this)
-                .load(pokemon.getGifUrl())
-                .into(pokemonImageView);
+    }
 
-        StringRequest pokemonInfoRequest = new StringRequest(Request.Method.GET, pokemon.getInfoUrl(),
+    private void setPokemonGIF(String pokemonName) {
+        pokemonImageView = findViewById(R.id.image_pokemon_detail_image);
+        String pokemonGifUrl = getResources().getString(R.string.gif_link) +
+                        pokemonName + ".gif";
+        Glide.with(this)
+                .load(pokemonGifUrl)
+                .into(pokemonImageView);
+    }
+
+    private void getPokemonDetails (String pokemonName) {
+        String pokemonUrl = getResources().getString(R.string.pokemon_api_base_url) +
+                "pokemon/" + pokemonName;
+        StringRequest pokemonInfoRequest = new StringRequest(Request.Method.GET, pokemonUrl,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        try {
-                            JSONObject pokemonsJson = new JSONObject(response);
-                            JSONArray pokemonTypes = pokemonsJson.getJSONArray("types");
-                            int len = pokemonTypes.length();
-                            for (int i = 0; i < len; i++) {
-                                JSONObject pokemonType = pokemonTypes.getJSONObject(i);
-                                if (pokemonType.getInt("slot") == 2) {
-                                    pokemon.setType2(pokemonType.getJSONObject("type").getString("name"));
-                                } else {
-                                    pokemon.setType1(pokemonType.getJSONObject("type").getString("name"));
-                                }
-                            }
-                            int bgResourceID = getResources().getIdentifier("bg_" + pokemon.getType1(), "drawable", getPackageName());
-                            if (bgResourceID != 0) {
-                                pokemonBGImageView.setImageDrawable(getDrawable(bgResourceID));
-                            } else {
-                                Toast.makeText(PokemonDetailActivity.this, pokemon.getType1(), Toast.LENGTH_SHORT).show();
-                                Toast.makeText(PokemonDetailActivity.this, "No backgroudn resource", Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        parsePokemonDetailsResponse(response);
+                        setBackgroundFromType(pokemon.getType1());
+                        setPokemonGIF(pokemon.getName());
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(PokemonDetailActivity.this, "Pokemon not found!", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 });
 
         requestQueue.add(pokemonInfoRequest);
+    }
 
+    private void parsePokemonDetailsResponse(String response) {
+        try {
+            JSONObject pokemonJson = new JSONObject(response);
+            JSONArray pokemonTypes = pokemonJson.getJSONArray("types");
+            int len = pokemonTypes.length();
+            for (int i = 0; i < len; i++) {
+                JSONObject pokemonType = pokemonTypes.getJSONObject(i);
+                if (pokemonType.getInt("slot") == 2) {
+                    pokemon.setType2(pokemonType.getJSONObject("type").getString("name"));
+                } else {
+                    pokemon.setType1(pokemonType.getJSONObject("type").getString("name"));
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void setBackgroundFromType(String type) {
+        pokemonTypeBGImageView = findViewById(R.id.image_pokemon_detail_bg);
+        
+        int bgResourceID = getResources().getIdentifier("bg_" + type, "drawable", getPackageName());
+        if (bgResourceID != 0) {
+            pokemonTypeBGImageView.setImageDrawable(getDrawable(bgResourceID));
+        } else {
+            Toast.makeText(PokemonDetailActivity.this, pokemon.getType1(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(PokemonDetailActivity.this, "No background resource", Toast.LENGTH_SHORT).show();
+        }
     }
 }
