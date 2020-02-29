@@ -24,18 +24,18 @@ import java.io.Serializable;
 import java.util.List;
 
 
-public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHolder> {
+public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokemonViewHolder> {
 
     private List<Pokemon> pokemonList;
     private Context context;
     private RequestQueue requestQueue;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class PokemonViewHolder extends RecyclerView.ViewHolder {
         public CardView pokemonCardView;
         public ImageView pokemonSpriteImageView;
         public TextView pokemonNameTextView;
 
-        public ViewHolder(View itemView) {
+        public PokemonViewHolder(View itemView) {
             super(itemView);
             pokemonCardView = itemView.findViewById(R.id.card_pokemon_mini);
             pokemonSpriteImageView = itemView.findViewById(R.id.image_pokemon_sprite);
@@ -50,17 +50,20 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public PokemonViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card_pokemon_simple, parent, false);
 
-        return new ViewHolder(itemView);
+        return new PokemonViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final PokemonViewHolder holder, int position) {
         final Pokemon pokemon = pokemonList.get(position);
-        holder.pokemonNameTextView.setText(pokemon.getName());
+
+        final String pokemonName = pokemon.getName();
+        String capitalizedPokemonName = pokemonName.substring(0, 1).toUpperCase() + pokemonName.substring(1);
+        holder.pokemonNameTextView.setText(capitalizedPokemonName);
 
         Glide.with(context)
                 .load(pokemon.getSpriteUrl())
@@ -71,15 +74,20 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, PokemonDetailActivity.class);
-                intent.putExtra("POKEMON", pokemon);
+                intent.putExtra("POKEMON_NAME", pokemonName);
                 context.startActivity(intent);
             }
         });
+
     }
 
     @Override
     public int getItemCount() {
         return pokemonList.size();
+    }
+
+    public interface OnLoadMoreListener {
+        void onLoadMore();
     }
 
 }
