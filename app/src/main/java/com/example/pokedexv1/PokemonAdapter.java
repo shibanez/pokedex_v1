@@ -60,7 +60,10 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokemonV
     @Override
     public void onBindViewHolder(final PokemonViewHolder holder, int position) {
         final Pokemon pokemon = pokemonList.get(position);
-        holder.pokemonNameTextView.setText(pokemon.getName());
+
+        final String pokemonName = pokemon.getName();
+        String capitalizedPokemonName = pokemonName.substring(0, 1).toUpperCase() + pokemonName.substring(1);
+        holder.pokemonNameTextView.setText(capitalizedPokemonName);
 
         Glide.with(context)
                 .load(pokemon.getSpriteUrl())
@@ -71,7 +74,7 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokemonV
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, PokemonDetailActivity.class);
-                intent.putExtra("POKEMON", pokemon);
+                intent.putExtra("POKEMON_NAME", pokemonName);
                 context.startActivity(intent);
             }
         });

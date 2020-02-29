@@ -19,7 +19,7 @@
             android:elevation="1dp"/>
         <ImageView
             android:id="@+id/image_pokemon_detail_image"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginTop="85dp"
             android:elevation="10dp"
