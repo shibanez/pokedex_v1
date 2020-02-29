@@ -1,6 +1,7 @@
 package com.example.pokedexv1;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,11 @@ import com.bumptech.glide.Glide;
 import com.example.pokedexv1.PokemonAPI.PokemonSingleton;
 import com.example.pokedexv1.model.Pokemon;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.Serializable;
 import java.util.List;
 
 
@@ -64,6 +70,9 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
         holder.pokemonCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(context, PokemonDetailActivity.class);
+                intent.putExtra("POKEMON", pokemon);
+                context.startActivity(intent);
             }
         });
     }

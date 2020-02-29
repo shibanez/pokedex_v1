@@ -38,7 +38,7 @@ public class PokemonListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_pokemon_list);
 
         pokemonGridRecyclerView = (RecyclerView) findViewById(R.id.recycle_view_pokemon_grid);
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 2);
@@ -54,7 +54,7 @@ public class PokemonListActivity extends AppCompatActivity {
     }
 
     private void getPokemonList() {
-        String url = getResources().getString(R.string.pokemon_api_base_url) + "pokemon";
+        String url = getResources().getString(R.string.pokemon_api_base_url) + "pokemon" + "?offset=0&limit=50";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

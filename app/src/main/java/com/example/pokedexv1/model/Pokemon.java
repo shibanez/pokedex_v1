@@ -1,7 +1,9 @@
 package com.example.pokedexv1.model;
 
-public class Pokemon {
-    private String name, infoUrl, spriteUrl, gifUrl;
+import java.io.Serializable;
+
+public class Pokemon implements Serializable {
+    private String name, infoUrl, spriteUrl, gifUrl, type1, type2;
 
     public Pokemon (String name, String infoUrl, String spriteUrl, String gifUrl) {
         this.name =  name.substring(0, 1).toUpperCase() + name.substring(1);
@@ -40,5 +42,21 @@ public class Pokemon {
 
     public void setGifUrl(String gifUrl) {
         this.gifUrl = gifUrl;
+    }
+
+    public String getType1() {
+        return type1;
+    }
+
+    public void setType1(String type1) {
+        this.type1 = type1;
+    }
+
+    public String getType2() {
+        return type2;
+    }
+
+    public void setType2(String type2) {
+        this.type2 = type2;
     }
 }
