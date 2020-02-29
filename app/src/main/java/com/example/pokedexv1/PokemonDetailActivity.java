@@ -16,6 +16,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
 import com.example.pokedexv1.PokemonAPI.PokemonSingleton;
 import com.example.pokedexv1.model.Pokemon;
 
@@ -35,25 +36,15 @@ public class PokemonDetailActivity extends AppCompatActivity {
 
         pokemon = (Pokemon) getIntent().getSerializableExtra("POKEMON");
 
-        final ImageView pokemonImageView = findViewById(R.id.image_pokemon_detail_image);
+        ImageView pokemonImageView = findViewById(R.id.image_pokemon_detail_image);
         final ImageView pokemonBGImageView = findViewById(R.id.image_pokemon_detail_bg);
-        TextView pokemonNameTextView = findViewById(R.id.text_pokemon_detail_name);
+        //TextView pokemonNameTextView = findViewById(R.id.text_pokemon_detail_name);
 
-        pokemonNameTextView.setText(pokemon.getName());
+        //pokemonNameTextView.setText(pokemon.getName());
 
-
-        ImageRequest imageRequest = new ImageRequest(pokemon.getImageUrl(),
-                new Response.Listener<Bitmap>() {
-                    @Override
-                    public void onResponse(Bitmap bitmap) {
-                        pokemonImageView.setImageBitmap(bitmap);
-                    }
-                }, 0, 0, null,
-                new Response.ErrorListener() {
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(PokemonDetailActivity.this, error.toString(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+        Glide.with(this)
+                .load(pokemon.getGifUrl())
+                .into(pokemonImageView);
 
         StringRequest pokemonInfoRequest = new StringRequest(Request.Method.GET, pokemon.getInfoUrl(),
                 new Response.Listener<String>() {
@@ -84,7 +75,6 @@ public class PokemonDetailActivity extends AppCompatActivity {
                     }
                 });
 
-        requestQueue.add(imageRequest);
         requestQueue.add(pokemonInfoRequest);
 
     }

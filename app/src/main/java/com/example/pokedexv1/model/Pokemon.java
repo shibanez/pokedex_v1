@@ -1,7 +1,9 @@
 package com.example.pokedexv1.model;
 
-public class Pokemon {
-    private String name, infoUrl, spriteUrl, gifUrl;
+import java.io.Serializable;
+
+public class Pokemon implements Serializable {
+    private String name, infoUrl, spriteUrl, gifUrl, type1, type2;
 
     public Pokemon (String name, String infoUrl, String spriteUrl, String gifUrl) {
         this.name =  name.substring(0, 1).toUpperCase() + name.substring(1);
