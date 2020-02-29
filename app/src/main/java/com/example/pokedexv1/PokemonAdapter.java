@@ -19,9 +19,14 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.example.pokedexv1.PokemonAPI.PokemonAPI;
 import com.example.pokedexv1.PokemonAPI.PokemonSingleton;
 import com.example.pokedexv1.model.Pokemon;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -63,7 +68,9 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
         final Pokemon pokemon = pokemonList.get(position);
         holder.pokemonNameTextView.setText(pokemon.getName());
 
-        ImageRequest request = new ImageRequest(pokemon.getSpriteUrl(),
+
+
+        ImageRequest imageRequest = new ImageRequest(pokemon.getSpriteUrl(),
                 new Response.Listener<Bitmap>() {
                     @Override
                     public void onResponse(Bitmap bitmap) {
@@ -75,7 +82,7 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
                         Toast.makeText(context, error.toString(), Toast.LENGTH_SHORT).show();
                     }
                 });
-        requestQueue.add(request);
+        requestQueue.add(imageRequest);
 
         holder.pokemonCardView.setOnClickListener(new View.OnClickListener() {
             @Override

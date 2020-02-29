@@ -54,7 +54,7 @@ public class PokemonListActivity extends AppCompatActivity {
     }
 
     private void getPokemonList() {
-        String url = getResources().getString(R.string.pokemon_api_base_url) + "pokemon";
+        String url = getResources().getString(R.string.pokemon_api_base_url) + "pokemon" + "?offset=0&limit=50";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

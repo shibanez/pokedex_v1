@@ -3,11 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="1000dp"
         android:background="@color/colorAccent">
+        <ImageView
+            android:id="@+id/image_pokemon_detail_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/bg_grass"
+            android:scaleType="centerCrop"
+            android:elevation="1dp"/>
         <ImageView
             android:id="@+id/image_pokemon_detail_image"
             android:layout_width="150dp"
@@ -19,8 +28,23 @@
             android:layout_width="match_parent"
             android:layout_height="1000dp"
             android:layout_marginTop="150dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
             android:elevation="10dp"
             app:cardCornerRadius="25dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/text_pokemon_detail_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:text="MAMAMO"/>
+            </LinearLayout>
         </androidx.cardview.widget.CardView>
     </RelativeLayout>
+
 </LinearLayout>
